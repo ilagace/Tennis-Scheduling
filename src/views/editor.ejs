@@ -1,0 +1,28 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Photo Editor</title>
+    <link rel='stylesheet' href='{{ url_for('static', filename='css/bootstrap.min.css')}}'>
+    <script type='text/javascript' src='{{ url_for('static', filename='js/jquery-1.12.2.min.js')}}'></script>
+    <script type='text/javascript' src='{{ url_for('static', filename='js/bootstrap.min.js')}}'></script>
+
+</head>
+
+<body>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-md-12'>
+        <% for(var i =0; i < dirArray.length;i++) {%>
+
+            <h4 class='text-uppercase text-center'><%=i%> <%=dirArray[i].theme%> <%=dirArray[i].folder%> <%=dirArray[i].subfolder%> <%=dirArray[i].filename%> <%=dirArray[i].exifDate%> <%=dirArray[i].photoDimW%> <%=dirArray[i].photoDimH%> <%=dirArray[i].camera%> <%=dirArray[i].year%>
+            <%=dirArray[i].gpsLatRef%> <%=dirArray[i].gpsLat%> <%=dirArray[i].gpsLongRef%> <%=dirArray[i].gpsLong%> </h4>
+
+        <%}%>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

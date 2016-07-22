@@ -1,0 +1,47 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Ivan",
+  "license": "ISC",
+  "dependencies": {
+    "angular-cookies": "^1.5.5",
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "cookies": "^0.6.1",
+    "ejs": "^2.4.1",
+    "exif": "^0.6.0",
+    "exif-reader": "^1.0.0",
+    "express": "^4.13.4",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.13.0",
+    "googlemaps": "^1.4.0",
+    "http": "0.0.0",
+    "image-size": "^0.5.0",
+    "jade": "^1.11.0",
+    "jsonfile": "^2.3.1",
+    "mongodb": "^2.1.17",
+    "mongoose": "^4.4.20",
+    "mssql": "^3.2.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "suspend": "^0.7.0",
+    "walk": "^2.3.9",
+    "xml2js": "^0.4.16"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-inject": "^4.0.0",
+    "gulp-jscs": "^3.0.2",
+    "gulp-jshint": "^2.0.0",
+    "gulp-nodemon": "^2.0.6",
+    "jshint": "^2.9.2",
+    "jshint-stylish": "^2.1.0",
+    "wiredep": "^4.0.0"
+  }
+}

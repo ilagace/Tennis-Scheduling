@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='managemedia'>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Photography - Portfolio</title>
+
+    <!-- Bootstrap core CSS -->
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="dist/css/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/navmenu-reveal.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/full-slider.css" rel="stylesheet">
+    <link href="css/Icomoon/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/animated-masonry-gallery.css" rel="stylesheet" type="text/css" />
+    <link href="css/lightbox.css" rel="stylesheet" type="text/css" />
+    <script src="js/angular.min.js"></script>
+    <script src="js/managemedia.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body ng-controller='MainCtrl as ctl' class="ng-scope">
+    <div class="bar">
+        <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-recalc="false" data-target=".navmenu" data-canvas=".canvas">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="navmenu navmenu-default navmenu-fixed-left">
+        <ul class="nav navmenu-nav">
+            <li><a href="/app/website">Home</a></li>
+            <li><a href="/navigation">Navigation</a></li>
+            <li><a href="/gallery/0">Gallery</a></li>
+            <li><a href="/admin/managemedia">Site Administration</a></li>
+            <li><a href="/admin/contact">Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="canvas gallery"><br>
+        <h1 class="blog-post-title text-center">Manage Web Site Media (Load and Categories)</h1>
+        <span class="title-divider"></span>
+
+        <div id="container" class="container">
+            <div class="row">
+                <div class="col-md-6" ng-controller="GalleryController as gallery" class="ng-scope">
+                    <div class="lb-container">
+                        <img class="lb-image img-responsive" ng-src="{{photoArray[key][current][0]}}" />
+                        <div class="lb-nav">
+                            <a href="" class="lb-prev" ng-click="gallery.decCurrent()"></a>
+                            <a href="" class="lb-next" ng-click="gallery.incCurrent()"></a>
+                        </div>
+                    </div>
+                </div>
+                <section ng-controller="CatController as cat" class="ng-scope">
+                    <div class="col-md-1">
+                        <ul class="nav nav-pills">
+                            <li ng-class="{ active:cat.isSet($index) }" ng-repeat='categ in category'>
+                                <a href="" ng-click="cat.setTab($index)">{{categ}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-4">
+                        <form name="descForm" ng-controller="DescController"
+                                              ng-submit="addDesc(desc)">
+                            <fieldset class="form-group" ng-disabled="disable">
+                                <label>Enter Description for Photo</label>
+                                <textarea ng-model="desc" class="form-control" rows="3"></textarea>
+                            </fieldset>
+                            <button type="submit" class="btn btn-primary" ng-disabled="disable">Submit</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+            <div class="row">
+                <h1> </h1>
+            </div>
+            <div class="row">
+                <section ng-controller="TabController1 as tab" class="ng-scope">
+                    <div class="col-md-2">
+                        <ul class="nav nav-pills">
+                            <li ng-class="{ active:tab.isSet($index) }" ng-repeat='base in basenav'>
+                                <a href="" ng-click="tab.setTab($index)">{{base}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <div class="col-md-2">
+                </div>
+                <section ng-controller="TabController2 as tab2" class="ng-scope">
+                    <div class="col-md-2">
+                        <ul class="nav nav-pills">
+                            <li ng-class="{ active:tab2.isSet($index) }" ng-repeat='fold in folder'>
+                                <a href="" ng-click="tab2.setTab($index)">{{fold}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                    <div class="col-md-2">
+                        <ul class="nav nav-pills">
+                            <li >
+                                <a href="" ng-click="ctl.callDelete()">Delete Category Associated with Photo</a><br>
+                                <a href="/admin/searchmedia/0">Get Missing Folders</a>
+                                <a href="/admin/searchmedia/1">Get Latest Folders</a>
+                            </li>
+                        </ul>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.10.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+    </script>
+    <script type="text/javascript" src="js/isotope.pkgd.min.js"></script>
+    <script type="text/javascript" src="js/animated-masonry-gallery.js"></script>
+    <script src="dist/js/jasny-bootstrap.min.js"></script>
+    <script src="js/lightbox.ejs"></script>
+
+</body>
+</html>

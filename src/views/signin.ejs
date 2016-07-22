@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Ivan Web Site</title>
+
+    <!-- Bootstrap core CSS -->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <style>
+    .modal-header, h4, .close {
+      background-color: #5cb85c;
+      color:white !important;
+      text-align: center;
+      font-size: 30px;
+    }
+    .modal-footer {
+      background-color: #f9f9f9;
+    }
+    </style>
+
+    <!--bower:css -->
+    <!--endbower -->
+    <!--bower:js -->
+    <!--endbower -->
+    <!--inject:js -->
+    <!--endinject -->
+    <!--inject:css -->
+    <!--endinject -->
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="container">
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 style="color:red;"><span class="glyphicon glyphicon-lock"></span> Login</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" action="/admin/signin" method="post">
+            <div class="form-group">
+              <label for="username"><span class="glyphicon glyphicon-user"></span> Username</label>
+              <input type="text" class="form-control" name="username" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="password"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+              <input type="text" class="form-control" name="password" placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-default btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <a href="/" class="btn btn-default btn-default pull-left"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+          <p>Only the Owner has access to this page</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#myModal').modal();
+    });
+    </script>
+
+
+</body>
+</html>
+
+
