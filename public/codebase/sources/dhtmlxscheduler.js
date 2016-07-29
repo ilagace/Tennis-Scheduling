@@ -1612,7 +1612,15 @@ dataProcessor.prototype={
 */
 	afterUpdateCallback:function(sid, tid, action, btag) {
 		var marker = sid;
+        console.log(action);
 		var correct=(action!="error" && action!="invalid");
+        var errorMsg = action.split('/');
+        if (errorMsg[0] == 'errorMsg') {
+            var elem = document.getElementById("warn");
+            var modal = document.getElementById("warnshow");
+            elem.innerHTML = errorMsg[1];
+            $('#warnshow').modal('show');
+        }
 		if (!correct) this.set_invalid(sid,action);
 		if ((this._uActions)&&(this._uActions[action])&&(!this._uActions[action](btag)))
 			return (delete this._in_progress[marker]);
@@ -2138,9 +2146,13 @@ scheduler._click={
 		}
 	},
 	dhx_cal_prev_button:function(){
+        page = Math.max(page - 1, 0);
 		scheduler._click.dhx_cal_next_button(0,-1);
 	},
 	dhx_cal_next_button:function(dummy,step){
+        if (step !== -1) {
+            page = Math.min(page + 1, 2);
+        }
 		scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
 			scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
 	},

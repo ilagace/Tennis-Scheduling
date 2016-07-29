@@ -2,13 +2,20 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="codebase/sources/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
-    <script src="codebase/ext/dhtmlxscheduler_quick_info.js" type="text/javascript" charset="utf-8"></script>
-    <link rel="stylesheet" href="codebase/dhtmlxscheduler.css" type="text/css" media="screen" title="no title" charset="utf-8">
     <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript"> var page = <%=page%>; </script> <!-- page is used to tract the day on mobile web page during session -->
+    <script src="codebase/sources/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+    <script src="codebase/ext/dhtmlxscheduler_limit.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="codebase/dhtmlxscheduler.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <script src="codebase/live_updates.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://192.168.1.127:8008/sync.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+<!--
     <script type="text/javascript">
-        setInterval('window.location.reload()', 30000); // NOTE: period is passed in milliseconds
+        setInterval('window.location.reload()', <%=delay%>); // NOTE: period is passed in milliseconds
     </script>
+-->
     <style type="text/css" media="screen">
      html, body{
          margin:0px;
@@ -19,17 +26,54 @@
     </style>
 
     <script type="text/javascript" charset="utf-8">
+
+        function linkWithPage(link) {
+            var pageLink = link + page;
+            window.open(pageLink, '_top');
+        }
+
         function init() {
             scheduler.templates.xml_date = function(value) { return new Date(value); };
             scheduler.config.event_duration = 60;
+            scheduler.config.auto_end_date = true;
+            scheduler.config.time_step = 15;
             scheduler.config.scroll_hour = 6;
+            // scheduler.config.show_quick_info = false;
             scheduler.config.xml_date = '%Y/%m/%d %H:%i';
             scheduler.config.api_date="%Y/%m/%d %H:%i";
-            scheduler.config.time_step = 15;
             scheduler.config.prevent_cache = true;
-            scheduler.init('scheduler_here',new Date(Date.now()),'week');
-            scheduler.load('/calendarH67/data','json');
-            var dp = new dataProcessor('/calendarH67/data');
+            var startDate = new Date();
+            var endDate = new Date();
+            endDate.setDate(endDate.getDate()+2); // set end date to two days in the future
+            scheduler.config.limit_start = new Date(startDate);
+            scheduler.config.limit_end = new Date(endDate);
+            scheduler.config.limit_view = true;
+            scheduler.templates.event_text = function(start,end,ev){
+                if (!ev.fullname) {
+                    return ev.text + '';
+                } else {
+                    return ev.fullname + ': ' + ev.text + '';
+                }
+            };
+            scheduler.templates.event_header = function(start,end,ev){
+                var retValue = '';
+                if (!ev.court && <%=court%> === 0) {
+                    retValue = 'Court 1 - ' + scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
+                } else {
+                    if (!ev.court) {
+                        retValue = 'Court <%=court%> - ' + scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
+                    } else {
+                        retValue = 'Court ' + ev.court + ' - ' + scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
+                    }
+                }
+                return retValue;
+            };
+            scheduler.locale.labels.new_event = 'Opponent';
+            startDate.setDate(startDate.getDate() + <%=page%>);
+            scheduler.init('scheduler_here',new Date(startDate),'<%=display%>');
+            scheduler.load('/calendarH67/data/<%=court%>','json');
+            var dp = new dataProcessor('/calendarH67/data/<%=court%>');
+            dp.live_updates("http://192.168.1.127:8008/sync");
             dp.init(scheduler);
             dp.setTransactionMode('POST', false);
         }
@@ -37,15 +81,50 @@
 </head>
 
 <body onload="init();">
+    <div id="warnshow" class="modal fade">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <a href="#" onClick="linkWithPage('/calendarH67/'); return false;" class="close" aria-label="Close">&times;</span>
+            </a>
+            <h4 class="modal-title">Warning!</h4>
+          </div>
+          <div id="warn" class="modal-body">
+            <p>&hellip;</p>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div class="row">
+        <div class="col-sm-10">
+            <h4 class="text-center">Habitat 67 Tennis Scheduling</h4>
+            <h5 class="text-center">An Application by Ivan Lagacé</h5>
+        </div>
+        <div class="col-sm-2">
+                <h5></h5>
+                <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-menu-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><% if (court == 0) { %>Both Courts<% } else { %>Court <%=court%><% } %></button>
+                <ul class="dropdown-menu">
+                    <li><a href="#" onClick="linkWithPage('/court/1/'); return false;">Court 1</a></li>
+                    <li><a href="#" onClick="linkWithPage('/court/2/'); return false;">Court 2</a></li>
+                    <li><a href="#" onClick="linkWithPage('/court/0/'); return false;">Both Courts</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:90%;'>
         <div class="dhx_cal_navline">
             <div class="dhx_cal_prev_button">&nbsp;</div>
             <div class="dhx_cal_next_button">&nbsp;</div>
+            <% if (display !== 'day' ) {%>
             <div class="dhx_cal_today_button"></div>
+            <% } %>
             <div class="dhx_cal_date"></div>
+            <% if (display !== 'day' ) {%>
             <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
             <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
             <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+            <% } %>
         </div>
         <div class="dhx_cal_header">
         </div>

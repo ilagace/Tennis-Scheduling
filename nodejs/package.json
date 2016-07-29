@@ -1,0 +1,16 @@
+{
+  "name": "mult-sync-dhtmlx",
+  "version": "0.0.0",
+  "description": "NodeJs backend for mulitisync data for DHTMLX components",
+  "main": "server.js",
+  "dependencies": {
+    "faye": "~1.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "GPL"
+}
