@@ -9,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var session = require('express-session');
 var flash = require('connect-flash');
+var favicon = require('serve-favicon');
 var delayMobile = 60000;
 var delayDesktop = 30000;
 var court = 0;
@@ -18,6 +19,7 @@ var approuter = require('./src/routes/approutes')(delayMobile, delayDesktop, cou
 app.use(express.static('public'));
 
 app.use('/court', express.static('public'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use('/court/0', express.static('public'));
 app.use('/court/1', express.static('public'));
 app.use('/court/2', express.static('public'));
