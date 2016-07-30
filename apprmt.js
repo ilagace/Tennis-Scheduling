@@ -15,16 +15,6 @@ var court = 0;
 
 var approuter = require('./src/routes/approutes')(delayMobile, delayDesktop, court);
 
-//Change starting directory as the call is via Windows Services, need to be changed on AWS so I use apprmt.js there
-console.log('Starting directory:', process.cwd());
-try {
-    process.chdir('D:/Software\ Development\ Projects/Tennis\ Scheduling');
-    console.log('New directory:', process.cwd());
-}
-catch (err) {
-    console.log('chdir:',err);
-}
-
 app.use(express.static('public'));
 
 app.use('/court', express.static('public'));
