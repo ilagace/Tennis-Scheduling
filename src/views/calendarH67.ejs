@@ -8,7 +8,7 @@
     <script src="codebase/ext/dhtmlxscheduler_limit.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="codebase/dhtmlxscheduler.css" type="text/css" media="screen" title="no title" charset="utf-8">
     <script src="codebase/live_updates.js" type="text/javascript"></script>
-    <script type="text/javascript" src="http://192.168.1.127:8008/sync.js"></script>
+    <script type="text/javascript" src="http://ivanlagace2.com:8008/sync.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
 <!--
@@ -73,7 +73,7 @@
             scheduler.init('scheduler_here',new Date(startDate),'<%=display%>');
             scheduler.load('/calendarH67/data/<%=court%>','json');
             var dp = new dataProcessor('/calendarH67/data/<%=court%>');
-            dp.live_updates("http://192.168.1.127:8008/sync");
+            dp.live_updates("http://ivanlagace2.com:8008/sync");
             dp.init(scheduler);
             dp.setTransactionMode('POST', false);
         }
