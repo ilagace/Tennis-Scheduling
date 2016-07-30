@@ -24,7 +24,7 @@ var router = function(delayMobile, delayDesktop, court) {
             {failureRedirect: '/H67signin', successRedirect: '/calendarH67/0', failureFlash: true, badRequestMessage: 'Missing Information'}));
 
     approuter.route('/H67signup').post(passport.authenticate('local-signup',
-            {failureRedirect: '/H67signup', successRedirect: '/calendarH67/0', failureFlash: true, badRequestMessage: 'Missing Information'}));
+            {failureRedirect: '/H67signup', successRedirect: '/H67signin', failureFlash: true, badRequestMessage: 'Missing Information'}));
 
     approuter.route('/calendarH67/data/:id').get(appController.getcalendarH67);
 
