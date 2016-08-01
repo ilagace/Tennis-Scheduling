@@ -1359,6 +1359,7 @@ dataProcessor.prototype={
 		var ind=this.findRow(rowId);
 
 		mode=mode||"updated";
+        console.log('setUpdated',rowId,state,mode,this.action_param);
 		var existing = this.obj.getUserData(rowId,this.action_param);
 		if (existing && mode == "updated") mode=existing;
 		if (state){
@@ -1488,7 +1489,6 @@ dataProcessor.prototype={
 
 			return that.afterUpdate(that,xml,ids);
 		},this,true);
-
 		var a3 = this.serverProcessor+(this._user?(getUrlSymbol(this.serverProcessor)+["dhx_user="+this._user,"dhx_version="+this.obj.getUserData(0,"version")].join("&")):"");
 
 		if (this._tMode=="GET")

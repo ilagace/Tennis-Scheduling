@@ -65,9 +65,9 @@ function isLoggedIn(req, res, next) {
 
 app.get('/', isLoggedIn, function(req, res) {
     if (/Mobi/.test(req.headers['user-agent'])) {
-        res.render('calendarH67/0',{delay:delayMobile, display:'day', court: court, page:0});
+        res.redirect('calendarH67/0',{delay:delayMobile, display:'day', court: court, page:0});
     } else {
-        res.render('calendarH67/0',{delay:delayDesktop, display:'week', court: court, page:0});
+        res.redirect('calendarH67/0',{delay:delayDesktop, display:'week', court: court, page:0});
     }
 });
 

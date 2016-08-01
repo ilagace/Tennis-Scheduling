@@ -2,6 +2,7 @@ var mongodb = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var lastCourt;
 var histID = {};
+var underscoreID = {};
 
 var appController = function(delayMobile, delayDesktop, court) {
 
@@ -45,7 +46,7 @@ var appController = function(delayMobile, delayDesktop, court) {
             collection.find(courtObj).toArray(function(err, data) {
                 //set id property for all records
                 for (var i = 0; i < data.length; i++) {
-                    data[i].id = data[i]._id;
+                    underscoreID[data.id] = data.id;
                     data['ISODate'] = Date.parse(data[i].end_date);  // if the reservation was updated before saving the changes
                 }
                 db.close();
@@ -63,43 +64,39 @@ var appController = function(delayMobile, delayDesktop, court) {
         var mode = data['!nativeeditor_status'];
         //get id of record
         var sid = data.id;
-        var sidstr = sid.toString();
         var tid = sid;
-        data['ISODate'] = Date.parse(data['end_date']);
 
         if (mode === 'updated') {
-            if (data['fullname'] === undefined) {
-                data['fullname'] = req.user.fullname;
-            }
-            if (data['court'] !== undefined) {
-                lastCourt = data['court'];
-            }
-            data['court'] = parseInt(lastCourt);
-            if (sidstr.length !== 24) {
-                var oldData = histID[sid];
-                if (oldData !== undefined) {
-                    sid = oldData[0];
-                    data['ISODate'] = oldData[1];
+            if (underscoreID[sid] === undefined) {
+                console.log(underscoreID,histID);
+                var newData = histID[sid];
+                if (newData !== undefined) {
+                    data['fullname'] = newData[0];
+                    data['court'] = newData[1];
+                    data['ISODate'] = newData[2];
+                    var updateID = newData[3];
                 } else {
+                    console.log('error in saving the new ids');
+                }
+                if (data['fullname'] !== req.user.fullname) {
                     errorMess = 'You cannot move other people reservations';
                 }
             }
         }
 
         if (mode === 'inserted') {
+            if (court === 0) {
+                data.court = 1;
+            } else {
+                data.court = court;
+            }
+            data['ISODate'] = Date.parse(data['end_date']);
             if (data['fullname'] === undefined) {
                 data['fullname'] = req.user.fullname;
             }
-            if (court === 0) {
-                data['court'] = 1;
-            } else {
-                data['court'] = court;
-            }
-            lastCourt = data['court'];
         }
 
         //remove properties which we do not want to save in DB
-        delete data.id;
         delete data.gr_id;
         delete data['!nativeeditor_status'];
 
@@ -111,7 +108,7 @@ var appController = function(delayMobile, delayDesktop, court) {
                 if (data['fullname'] !== req.user.fullname) {
                     errorMess = 'You cannot delete other people reservations';
                 } else {
-                    collection.remove({_id: ObjectID(sid)});
+                    collection.remove({_id: data.id});
                 }
                 if (errorMess !== '') {
                     mode = 'errorMsg/' + errorMess;
@@ -143,8 +140,8 @@ var appController = function(delayMobile, delayDesktop, court) {
                                         if (result.length !== 0) {
                                             for (var i = 0; i < result.length; i++) {
                                                 var updtest = true;
-                                                if (mode === 'updated' && sidstr.length === 24) {
-                                                    updtest = !result[i]._id.equals(ObjectID(sid));
+                                                if (mode === 'updated') {
+                                                    updtest = result[i].id !== sid;
                                                 }
                                                 if (updtest && data['start_date'] >= result[i].start_date && data['start_date'] < result[i].end_date) {
                                                     errorMess = 'Overlap start date';
@@ -161,22 +158,22 @@ var appController = function(delayMobile, delayDesktop, court) {
                                             }
                                             if (errorMess === '') {
                                                 //run db operation
-                                                if (mode === 'updated' && sidstr.length === 24) {
-                                                    collection.update({_id: ObjectID(sid)}, data);
+                                                if (mode === 'updated') {
+                                                    collection.update({_id: updateID}, data);
                                                 }
                                                 if (mode === 'inserted') {
                                                     collection.insert(data, function(err){
-                                                       if (err) return;
-                                                       // Object inserted successfully.
-                                                       data.court = data._id; // this will return the id of object inserted
+                                                        if (err) return;
+                                                        // Object inserted successfully.
+                                                        histID[sid] = [data['fullname'], data['court'], data.ISODate, data._id]; // this will return the id and date of object inserted
                                                     });
                                                 }
                                             }
                                         } else {
                                             collection.insert(data, function(err){
-                                               if (err) return;
-                                               // Object inserted successfully.
-                                               histID[sid] = [data._id, data.ISODate]; // this will return the id and date of object inserted
+                                                if (err) return;
+                                                // Object inserted successfully.
+                                                histID[sid] = [data['fullname'], data['court'], data.ISODate, data._id]; // this will return the id and date of object inserted
                                             });
                                         }
                                     }

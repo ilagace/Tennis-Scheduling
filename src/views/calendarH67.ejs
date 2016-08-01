@@ -41,13 +41,24 @@
             // scheduler.config.show_quick_info = false;
             scheduler.config.xml_date = '%Y/%m/%d %H:%i';
             scheduler.config.api_date="%Y/%m/%d %H:%i";
-            // scheduler.config.prevent_cache = true;
+            scheduler.config.prevent_cache = true;
             var startDate = new Date();
             var endDate = new Date();
             endDate.setDate(endDate.getDate()+2); // set end date to two days in the future
             scheduler.config.limit_start = new Date(startDate);
             scheduler.config.limit_end = new Date(endDate);
             scheduler.config.limit_view = true;
+            scheduler.data_attributes = function(){
+                return [
+                    ['id'],
+                    ['text'],
+                    ['start_date',scheduler.templates.xml_format],
+                    ['end_date',scheduler.templates.xml_format],
+                    ['fullname'],
+                    ['ISODate'],
+                    ['court']
+                    ];
+            }
             scheduler.templates.event_text = function(start,end,ev){
                 if (!ev.fullname) {
                     return ev.text + '';

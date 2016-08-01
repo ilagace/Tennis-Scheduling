@@ -140,12 +140,12 @@ if (typeof(dhtmlXTreeObject) !== "undefined") {
 		if (this.exists(id))
 			this.deleteItem(id);
 	};
-	
+
 	dhtmlXTreeObject.prototype.exists = function(id) {
 		var text = this.getItemText(id);
 		return (text !== 0) ? true : false;
 	};
-	
+
 	dhtmlXTreeObject.prototype.add = function(data) {
 		return this.insertNewChild(data.parent, data.id, data.text);
 	};
@@ -171,6 +171,7 @@ if (typeof(dhtmlXTreeObject) !== "undefined") {
 if (typeof(scheduler) !== "undefined") {
 	scheduler.item = function(id) {
 		var event = this.getEvent(id);
+
 		if (!event) return {};
 		var data = {};
 		for (var i in event)
@@ -201,6 +202,9 @@ if (typeof(scheduler) !== "undefined") {
 	};
 
 	scheduler.add = function(data) {
+		var convert = scheduler.date.str_to_date(scheduler.config.api_date, true);
+		data.start_date = convert(data.start_date);
+		data.end_date = convert(data.end_date);
 		return this.addEvent(data.start_date, data.end_date, data.text, data.id, data);
 	};
 
