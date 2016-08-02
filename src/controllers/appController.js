@@ -82,6 +82,8 @@ var appController = function(delayMobile, delayDesktop, court) {
                     errorMess = 'You cannot move other people reservations';
                 }
             }
+            console.log(histID[sid]);
+            updateID = histID[sid][3];
             if (data['fullname'] === undefined) {
                 data['fullname'] = req.user.fullname;
             }
