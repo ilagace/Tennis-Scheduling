@@ -3,7 +3,15 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript"> var page = <%=page%>; </script> <!-- page is used to tract the day on mobile web page during session -->
+    <script type="text/javascript">
+        var page = <%=page%>;
+        var court = <%=court%>;
+        if (court === 0) {
+            court = 1;
+        } else {
+            court = court;
+        }
+    </script> <!-- page is used to tract the day on mobile web page during session -->
     <script src="codebase/sources/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
     <script src="codebase/ext/dhtmlxscheduler_limit.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="codebase/dhtmlxscheduler.css" type="text/css" media="screen" title="no title" charset="utf-8">
@@ -68,14 +76,10 @@
             };
             scheduler.templates.event_header = function(start,end,ev){
                 var retValue = '';
-                if (!ev.court && <%=court%> === 0) {
-                    retValue = 'Court 1 - ' + scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
+                if (!ev.court) {
+                    retValue = 'Court <%=court%> - ' + scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
                 } else {
-                    if (!ev.court) {
-                        retValue = 'Court <%=court%> - ' + scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
-                    } else {
-                        retValue = 'Court ' + ev.court + ' - ' + scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
-                    }
+                    retValue = 'Court ' + ev.court + ' - ' + scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
                 }
                 return retValue;
             };

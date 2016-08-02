@@ -1359,7 +1359,6 @@ dataProcessor.prototype={
 		var ind=this.findRow(rowId);
 
 		mode=mode||"updated";
-        console.log('setUpdated',rowId,state,mode,this.action_param);
 		var existing = this.obj.getUserData(rowId,this.action_param);
 		if (existing && mode == "updated") mode=existing;
 		if (state){
@@ -1612,7 +1611,6 @@ dataProcessor.prototype={
 */
 	afterUpdateCallback:function(sid, tid, action, btag) {
 		var marker = sid;
-        console.log(action);
 		var correct=(action!="error" && action!="invalid");
         var errorMsg = action.split('/');
         if (errorMsg[0] == 'errorMsg') {
@@ -2192,6 +2190,7 @@ scheduler._dhtmlx_confirm = function(message, title, callback) {
 	dhtmlx.confirm(opts);
 };
 scheduler.addEventNow=function(start,end,e){
+
 	var base = {};
 	if (start && start.constructor.toString().match(/object/i) !== null){
 		base = start;
@@ -2222,6 +2221,7 @@ scheduler.addEventNow=function(start,end,e){
 	this._drag_mode="new-size";
 
 	this._loading=true;
+    base.court = court;
 	this.addEvent(base);
 	this.callEvent("onEventCreated",[this._drag_id,e]);
 	this._loading=false;
@@ -3737,7 +3737,8 @@ scheduler.deleteEvent = function(id, silent) {
 	this.callEvent("onEventDeleted", [id, ev]);
 };
 scheduler.getEvent = function(id) {
-	return this._events[id];
+    var ev = this._events[id];
+	return ev;
 };
 scheduler.setEvent = function(id, hash) {
 	if(!hash.id)

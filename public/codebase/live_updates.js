@@ -28,10 +28,12 @@ if (typeof(dataProcessor) !== "undefined") {
 							if (sid !== tid) self.obj.changeId(sid, tid);
 						});
 					} else {
-						data.id = tid;
-						self.ignore(function() {
-							self.obj.add(data);
-						});
+						if (data.court === court) {
+							data.id = tid;
+							self.ignore(function() {
+								self.obj.add(data);
+							});
+						}
 					}
 					break;
 				case 'deleted':

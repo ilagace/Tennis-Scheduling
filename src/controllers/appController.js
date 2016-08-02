@@ -46,8 +46,8 @@ var appController = function(delayMobile, delayDesktop, court) {
             collection.find(courtObj).toArray(function(err, data) {
                 //set id property for all records
                 for (var i = 0; i < data.length; i++) {
-                    underscoreID[data.id] = data.id;
-                    data['ISODate'] = Date.parse(data[i].end_date);  // if the reservation was updated before saving the changes
+                    underscoreID[data[i].id] = data[i]._id;
+                    //data['ISODate'] = Date.parse(data[i].end_date);  // if the reservation was updated before saving the changes
                 }
                 db.close();
                 //output response
@@ -65,22 +65,25 @@ var appController = function(delayMobile, delayDesktop, court) {
         //get id of record
         var sid = data.id;
         var tid = sid;
+        var updateID = '';
 
         if (mode === 'updated') {
             if (underscoreID[sid] === undefined) {
-                console.log(underscoreID,histID);
                 var newData = histID[sid];
                 if (newData !== undefined) {
                     data['fullname'] = newData[0];
                     data['court'] = newData[1];
                     data['ISODate'] = newData[2];
-                    var updateID = newData[3];
+                    updateID = newData[3];
                 } else {
                     console.log('error in saving the new ids');
                 }
                 if (data['fullname'] !== req.user.fullname) {
                     errorMess = 'You cannot move other people reservations';
                 }
+            }
+            if (data['fullname'] === undefined) {
+                data['fullname'] = req.user.fullname;
             }
         }
 
@@ -105,10 +108,19 @@ var appController = function(delayMobile, delayDesktop, court) {
             var collection = db.collection('H67tennis');
             //verify ownership before deleting
             if (mode === 'deleted') {
+                if (underscoreID[sid] === undefined) {
+                    var newData = histID[sid];
+                    if (newData !== undefined) {
+                        data['fullname'] = newData[0];
+                        updateID = newData[3];
+                    }
+                } else {
+                    updateID = underscoreID[sid];
+                }
                 if (data['fullname'] !== req.user.fullname) {
                     errorMess = 'You cannot delete other people reservations';
                 } else {
-                    collection.remove({_id: data.id});
+                    collection.remove({_id: updateID});
                 }
                 if (errorMess !== '') {
                     mode = 'errorMsg/' + errorMess;
