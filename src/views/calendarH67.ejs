@@ -5,11 +5,12 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript">
         var page = <%=page%>;
-        var court = <%=court%>;
-        if (court === 0) {
+        var courtdisp = <%=court%>;
+        var court = 0;
+        if (courtdisp === 0) {
             court = 1;
         } else {
-            court = court;
+            court = courtdisp;
         }
     </script> <!-- page is used to tract the day on mobile web page during session -->
     <script src="codebase/sources/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>

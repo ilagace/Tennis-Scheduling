@@ -1,8 +1,5 @@
 var mongodb = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
-var lastCourt;
-var histID = {};
-var underscoreID = {};
 
 var appController = function(delayMobile, delayDesktop, court) {
 
@@ -45,10 +42,10 @@ var appController = function(delayMobile, delayDesktop, court) {
             var collection = db.collection('H67tennis');
             collection.find(courtObj).toArray(function(err, data) {
                 //set id property for all records
-                for (var i = 0; i < data.length; i++) {
-                    underscoreID[data[i].id] = data[i]._id;
+                //for (var i = 0; i < data.length; i++) {
+                    //underscoreID[data[i].id] = data[i]._id;
                     //data['ISODate'] = Date.parse(data[i].end_date);  // if the reservation was updated before saving the changes
-                }
+                //}
                 db.close();
                 //output response
                 res.send(data);
@@ -67,28 +64,6 @@ var appController = function(delayMobile, delayDesktop, court) {
         var tid = sid;
         var updateID = '';
 
-        if (mode === 'updated') {
-            if (underscoreID[sid] === undefined) {
-                var newData = histID[sid];
-                if (newData !== undefined) {
-                    data['fullname'] = newData[0];
-                    data['court'] = newData[1];
-                    data['ISODate'] = newData[2];
-                    updateID = newData[3];
-                } else {
-                    console.log('error in saving the new ids');
-                }
-                if (data['fullname'] !== req.user.fullname) {
-                    errorMess = 'You cannot move other people reservations';
-                }
-            }
-            console.log(histID[sid]);
-            updateID = histID[sid][3];
-            if (data['fullname'] === undefined) {
-                data['fullname'] = req.user.fullname;
-            }
-        }
-
         if (mode === 'inserted') {
             if (court === 0) {
                 data.court = 1;
@@ -96,9 +71,7 @@ var appController = function(delayMobile, delayDesktop, court) {
                 data.court = court;
             }
             data['ISODate'] = Date.parse(data['end_date']);
-            if (data['fullname'] === undefined) {
-                data['fullname'] = req.user.fullname;
-            }
+            data['fullname'] = req.user.fullname;
         }
 
         //remove properties which we do not want to save in DB
@@ -108,100 +81,99 @@ var appController = function(delayMobile, delayDesktop, court) {
         var url = 'mongodb://localhost:27017/library';
         mongodb.connect(url, function(err, db) {
             var collection = db.collection('H67tennis');
-            //verify ownership before deleting
-            if (mode === 'deleted') {
-                if (underscoreID[sid] === undefined) {
-                    var newData = histID[sid];
-                    if (newData !== undefined) {
-                        data['fullname'] = newData[0];
-                        updateID = newData[3];
+            collection.findOne({id:sid.toString()}, function(err, result) {
+                if (result) {
+                    if (mode !== 'inserted') {
+                        data['fullname'] = result.fullname;
+                        data['court'] = result.court;
+                        data['ISODate'] = result.ISODate;
+                        updateID = result._id;
                     }
-                } else {
-                    updateID = underscoreID[sid];
-                }
-                if (data['fullname'] !== req.user.fullname) {
-                    errorMess = 'You cannot delete other people reservations';
-                } else {
-                    collection.remove({_id: updateID});
-                }
-                if (errorMess !== '') {
-                    mode = 'errorMsg/' + errorMess;
-                }
-                res.setHeader("Content-Type","text/xml");
-                res.send("<data><action type='"+mode+"' sid='"+sid+"' tid='"+tid+"'/></data>");
-            } else {
-                //verify that we do not exceed maximum number of reservations (2)
-                var coll2 = db.collection('tennisusers');
-                coll2.findOne({fullname:data['fullname']}, function(err, user) {
-                    if (!user) {
-                        console.log(req.user.fullname);
+                    var messText = '';
+                    if (mode === 'deleted') {
+                        messText = ' delete ';
+                    } else {
+                        messText = ' move ';
                     }
-                    var maxvalue = user.activReserv;
-                    collection.find({fullname:data['fullname'], ISODate: {$gt: new Date().getTime()}}).toArray(function(err, result) {
-                        if(!result) {
-                            res.setHeader("Content-Type","text/xml");
-                            res.send("<data><action type='"+mode+"' sid='"+sid+"' tid='"+tid+"'/></data>");
-                        } else {
-                            if (result.length >= maxvalue && mode === 'inserted') {
-                                errorMess = 'Exceeded maximum number of reservations allowed';
-                                mode = 'errorMsg/' + errorMess;
+                    if (data['fullname'] !== req.user.fullname) {
+                        errorMess = 'You cannot' + messText + 'other people reservations';
+                    }
+                }
+                //verify ownership before deleting
+                if (mode === 'deleted') {
+                    if (errorMess !== '') {
+                        mode = 'errorMsg/' + errorMess;
+                    } else {
+                        collection.remove({_id: updateID});
+                    }
+                    res.setHeader("Content-Type","text/xml");
+                    res.send("<data><action type='"+mode+"' sid='"+sid+"' tid='"+tid+"'/></data>");
+                } else {
+                    //verify that we do not exceed maximum number of reservations (2)
+                    var coll2 = db.collection('tennisusers');
+                    coll2.findOne({fullname:data['fullname']}, function(err, user) {
+                        if (!user) {
+                            console.log('Warning : Cannot find user ???');
+                        }
+                        var maxvalue = user.activReserv;
+                        collection.find({fullname:data['fullname'], ISODate: {$gt: new Date().getTime()}}).toArray(function(err, result) {
+                            if (!result) {
                                 res.setHeader("Content-Type","text/xml");
                                 res.send("<data><action type='"+mode+"' sid='"+sid+"' tid='"+tid+"'/></data>");
                             } else {
-                                //verify for overlap with existing appointment
-                                collection.find({court:data['court']}).toArray(function(err, result) {
-                                    if (result) {
-                                        if (result.length !== 0) {
-                                            for (var i = 0; i < result.length; i++) {
-                                                var updtest = true;
-                                                if (mode === 'updated') {
-                                                    updtest = result[i].id !== sid;
-                                                }
-                                                if (updtest && data['start_date'] >= result[i].start_date && data['start_date'] < result[i].end_date) {
-                                                    errorMess = 'Overlap start date';
-                                                } else {
-                                                    if (updtest && data['end_date'] > result[i].start_date && data['end_date'] <= result[i].end_date) {
-                                                        errorMess = 'Overlap end date';
-                                                    }
-                                                }
-                                            }
-                                            if (mode === 'updated') {
-                                                if (data['fullname'] !== req.user.fullname) {
-                                                    errorMess = 'You cannot move other people reservations';
-                                                }
-                                            }
-                                            if (errorMess === '') {
-                                                //run db operation
-                                                if (mode === 'updated') {
-                                                    collection.update({_id: updateID}, data);
-                                                }
-                                                if (mode === 'inserted') {
-                                                    collection.insert(data, function(err){
-                                                        if (err) return;
-                                                        // Object inserted successfully.
-                                                        histID[sid] = [data['fullname'], data['court'], data.ISODate, data._id]; // this will return the id and date of object inserted
-                                                    });
-                                                }
-                                            }
-                                        } else {
-                                            collection.insert(data, function(err){
-                                                if (err) return;
-                                                // Object inserted successfully.
-                                                histID[sid] = [data['fullname'], data['court'], data.ISODate, data._id]; // this will return the id and date of object inserted
-                                            });
-                                        }
-                                    }
-                                    if (errorMess !== '') {
-                                        mode = 'errorMsg/' + errorMess;
-                                    }
+                                if (result.length >= maxvalue && mode === 'inserted') {
+                                    errorMess = 'Exceeded maximum number of reservations allowed';
+                                    mode = 'errorMsg/' + errorMess;
                                     res.setHeader("Content-Type","text/xml");
                                     res.send("<data><action type='"+mode+"' sid='"+sid+"' tid='"+tid+"'/></data>");
-                                });
+                                } else {
+                                    //verify for overlap with existing appointment
+                                    collection.find({court:data['court']}).toArray(function(err, result) {
+                                        if (result) {
+                                            if (result.length !== 0) {
+                                                for (var i = 0; i < result.length; i++) {
+                                                    var updtest = true;
+                                                    if (mode === 'updated') {
+                                                        updtest = result[i].id !== sid;
+                                                    }
+                                                    if (updtest && data['start_date'] >= result[i].start_date && data['start_date'] < result[i].end_date) {
+                                                        errorMess = 'Overlap start date';
+                                                    } else {
+                                                        if (updtest && data['end_date'] > result[i].start_date && data['end_date'] <= result[i].end_date) {
+                                                            errorMess = 'Overlap end date';
+                                                        }
+                                                    }
+                                                }
+                                                if (mode === 'updated') {
+                                                    if (data['fullname'] !== req.user.fullname) {
+                                                        errorMess = 'You cannot move other people reservations';
+                                                    }
+                                                }
+                                                if (errorMess === '') {
+                                                    //run db operation
+                                                    if (mode === 'updated') {
+                                                        collection.update({_id: updateID}, data);
+                                                    }
+                                                    if (mode === 'inserted') {
+                                                        collection.insert(data);
+                                                    }
+                                                }
+                                            } else {
+                                                collection.insert(data);
+                                            }
+                                        }
+                                        if (errorMess !== '') {
+                                            mode = 'errorMsg/' + errorMess;
+                                        }
+                                        res.setHeader("Content-Type","text/xml");
+                                        res.send("<data><action type='"+mode+"' sid='"+sid+"' tid='"+tid+"'/></data>");
+                                    });
+                                }
                             }
-                        }
+                        });
                     });
-                });
-            }
+                }
+            });
         });
     };
 

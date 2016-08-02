@@ -28,7 +28,7 @@ if (typeof(dataProcessor) !== "undefined") {
 							if (sid !== tid) self.obj.changeId(sid, tid);
 						});
 					} else {
-						if (data.court === court) {
+						if (data.court === court || courtdisp === 0) {
 							data.id = tid;
 							self.ignore(function() {
 								self.obj.add(data);
