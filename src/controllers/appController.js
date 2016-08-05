@@ -1,28 +1,31 @@
 var mongodb = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 
-var appController = function(delayMobile, delayDesktop, court) {
+var appController = function(delayMobile, delayDesktop, fullname) {
 
     var middleware = function(req, res, next) {
         next();
     };
 
     var getApp = function (req, res) {
-        var pageId = parseInt(req.params.id);
+        fullname = req.user.fullname;
+        var pageId = parseInt(req.params.page);
+        var court = parseInt(req.params.court);
         if (/Mobi/.test(req.headers['user-agent'])) {
-            res.render('calendarH67',{delay:delayMobile, display:'day', court: 0, page:pageId});
+            res.render('calendarH67',{delay:delayMobile, display:'day', court: court, page:pageId, fulln:fullname});
         } else {
-            res.render('calendarH67',{delay:delayDesktop, display:'week', court: 0, page:0});
+            res.render('calendarH67',{delay:delayDesktop, display:'week', court: court, page:0, fulln:fullname});
         }
     };
 
     var getCourt = function (req, res) {
-        court = parseInt(req.params.id);
+        fullname = req.user.fullname;
+        var court = parseInt(req.params.id);
         var pageId = parseInt(req.params.page);
         if (/Mobi/.test(req.headers['user-agent'])) {
-            res.render('calendarH67',{delay:delayMobile, display:'day', court: court, page:pageId});
+            res.render('calendarH67',{delay:delayMobile, display:'day', court: court, page:pageId, fulln:fullname});
         } else {
-            res.render('calendarH67',{delay:delayDesktop, display:'week', court: court, page:0});
+            res.render('calendarH67',{delay:delayDesktop, display:'week', court: court, page:0, fulln:fullname});
         }
     };
 
@@ -32,7 +35,7 @@ var appController = function(delayMobile, delayDesktop, court) {
     };
 
     var getcalendarH67 = function (req, res) {
-        court = parseInt(req.params.id);
+        var court = parseInt(req.params.id);
         var courtObj = {};
         if (court !== 0) {
             courtObj = {'court': court};
@@ -41,11 +44,6 @@ var appController = function(delayMobile, delayDesktop, court) {
         mongodb.connect(url, function(err, db) {
             var collection = db.collection('H67tennis');
             collection.find(courtObj).toArray(function(err, data) {
-                //set id property for all records
-                //for (var i = 0; i < data.length; i++) {
-                    //underscoreID[data[i].id] = data[i]._id;
-                    //data['ISODate'] = Date.parse(data[i].end_date);  // if the reservation was updated before saving the changes
-                //}
                 db.close();
                 //output response
                 res.send(data);
@@ -54,7 +52,7 @@ var appController = function(delayMobile, delayDesktop, court) {
     };
 
     var postcalendarH67 = function (req, res) {
-        court = parseInt(req.params.id);
+        var court = parseInt(req.params.id);
         var errorMess = '';
         var data = req.body;
         //get operation type

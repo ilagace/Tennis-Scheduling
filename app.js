@@ -2,7 +2,7 @@ var express = require('express');
 
 var app = express();
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -11,9 +11,9 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var delayMobile = 60000;
 var delayDesktop = 30000;
-var court = 0;
+var fullname = '';
 
-var approuter = require('./src/routes/approutes')(delayMobile, delayDesktop, court);
+var approuter = require('./src/routes/approutes')(delayMobile, delayDesktop, fullname);
 
 //Change starting directory as the call is via Windows Services, need to be changed on AWS so I use apprmt.js there
 console.log('Starting directory:', process.cwd());
@@ -25,13 +25,8 @@ catch (err) {
     console.log('chdir:',err);
 }
 
-app.use(express.static('public'));
-
-app.use('/court', express.static('public'));
-app.use('/court/0', express.static('public'));
-app.use('/court/1', express.static('public'));
-app.use('/court/2', express.static('public'));
-app.use('/calendarH67', express.static('public'));
+app.use(express.static(__dirname + 'public'));
+app.use('/', express.static('public'));
 
 app.set('views','./src/views');
 
@@ -49,11 +44,11 @@ require('./src/config/passport')(app);
 
 app.set('view engine','ejs');
 
+app.use('//', approuter);
 app.use('/', approuter);
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-    console.log(req.isAuthenticated());
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated()) {
         return next();
@@ -63,12 +58,9 @@ function isLoggedIn(req, res, next) {
     res.render('H67signin', {error: req.flash('error')});
 }
 
-app.get('/', isLoggedIn, function(req, res) {
-    if (/Mobi/.test(req.headers['user-agent'])) {
-        res.redirect('calendarH67/0',{delay:delayMobile, display:'day', court: court, page:0});
-    } else {
-        res.redirect('calendarH67/0',{delay:delayDesktop, display:'week', court: court, page:0});
-    }
+app.get('/', function(req, res) {
+    req.flash('error','You must Login to access the Scheduler');
+    res.render('H67signin', {error: req.flash('error')});
 });
 
 app.listen(port, function (err) {

@@ -2222,6 +2222,7 @@ scheduler.addEventNow=function(start,end,e){
 
 	this._loading=true;
     base.court = court;
+    base.fullname = full_name;
 	this.addEvent(base);
 	this.callEvent("onEventCreated",[this._drag_id,e]);
 	this._loading=false;

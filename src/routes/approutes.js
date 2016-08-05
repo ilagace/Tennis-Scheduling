@@ -7,28 +7,28 @@ var passport = require('passport');
 
 var approuter = express.Router();
 
-var router = function(delayMobile, delayDesktop, court) {
+var router = function(delayMobile, delayDesktop, fullname) {
 
-    var appController = require('../controllers/appController')(delayMobile, delayDesktop, court);
+    var appController = require('../controllers/appController')(delayMobile, delayDesktop, fullname);
 
     approuter.use(appController.middleware);
 
-    approuter.route('/calendarH67/:id').get(appController.getApp);
+    approuter.route('/calendarH67/:page/:court').get(appController.getApp);
 
     approuter.route('/court/:id/:page').get(appController.getCourt);
 
     approuter.route('/:id').get(appController.getPage);
 
     //  User must sign-in to access the scheduler
-    approuter.route('/H67signin').post(passport.authenticate('local-signin',
-            {failureRedirect: '/H67signin', successRedirect: '/calendarH67/0', failureFlash: true, badRequestMessage: 'Missing Information'}));
+    approuter.route('/H67signin/').post(passport.authenticate('local-signin',
+            {failureRedirect: '/tennis/H67signin/', successRedirect: '/tennis/calendarH67/0/0/', failureFlash: true, badRequestMessage: 'Missing Information'}));
 
-    approuter.route('/H67signup').post(passport.authenticate('local-signup',
-            {failureRedirect: '/H67signup', successRedirect: '/H67signin', failureFlash: true, badRequestMessage: 'Missing Information'}));
+    approuter.route('/H67signup/').post(passport.authenticate('local-signup',
+            {failureRedirect: '/tennis/H67signup/', successRedirect: '/tennis/H67signin/', failureFlash: true, badRequestMessage: 'Missing Information'}));
 
-    approuter.route('/calendarH67/data/:id').get(appController.getcalendarH67);
+    approuter.route('/calendardata/:id').get(appController.getcalendarH67);
 
-    approuter.route('/calendarH67/data/:id').post(appController.postcalendarH67);
+    approuter.route('/calendardata/:id').post(appController.postcalendarH67);
 
     return approuter;
 

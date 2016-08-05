@@ -55,13 +55,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 style="color:red;"><span class="glyphicon glyphicon-lock"></span> Login</h4>
+          <h4 style="color:red;"><span class="glyphicon glyphicon-lock"></span> Sign-up</h4>
           <% if (error) { %>
           <h5 style="color:red;"><%= error %></h5>
           <% } %>
         </div>
         <div class="modal-body">
-          <form role="form" action="/H67signup" method="post">
+          <form role="form" action="/tennis/H67signup/" method="post">
             <div class="form-group">
               <label for="username"><span class="glyphicon glyphicon-user"></span> E-mail or Username (E-mail is best)</label>
               <input type="text" class="form-control" name="username" placeholder="Enter email">
@@ -80,7 +80,7 @@
         <div class="modal-footer">
           <a href="/" class="btn btn-default btn-default pull-left"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
           <p>Please Sign-up or Login to access the scheduling application</p>
-          <p>Already have an account? <a href="/H67signin">Login</a></p>
+          <p>Already have an account? <a href="/tennis/H67signin">Login</a></p>
           <p>Or go <a href="/">Home</a>.</p>
         </div>
       </div>
@@ -91,7 +91,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="js/jquery.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 

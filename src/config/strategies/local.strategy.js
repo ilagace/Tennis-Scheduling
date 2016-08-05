@@ -12,7 +12,6 @@ module.exports = function() {
             mongodb.connect(url, function(err,db) {
                 var collection = db.collection('tennisusers');
                 collection.findOne({username: username}, function(err,user) {
-                    console.log(err,user);
                     if (err) {
                         db.close();
                         return done(err);
