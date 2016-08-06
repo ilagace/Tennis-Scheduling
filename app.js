@@ -35,10 +35,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({secret: 'ivanlibrary'}));
 app.use(flash());
-//app.use(function(req, res, next) {
-//    res.locals.message = req.flash();
-//    next();
-//});
 
 require('./src/config/passport')(app);
 
