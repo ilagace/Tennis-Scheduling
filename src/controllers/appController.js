@@ -8,6 +8,7 @@ var appController = function(delayMobile, delayDesktop, fullname) {
     };
 
     var getApp = function (req, res) {
+        console.log(req.headers);
         fullname = req.user.fullname;
         var pageId = parseInt(req.params.page);
         var court = parseInt(req.params.court);
