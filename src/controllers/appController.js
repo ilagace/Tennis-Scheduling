@@ -61,6 +61,7 @@ var appController = function(delayMobile, delayDesktop, fullname) {
         var sid = data.id;
         var tid = sid;
         var updateID = '';
+        console.log(fullname);
 
         if (mode === 'inserted') {
             if (court === 0) {
@@ -69,7 +70,7 @@ var appController = function(delayMobile, delayDesktop, fullname) {
                 data.court = court;
             }
             data['ISODate'] = Date.parse(data['end_date']);
-            data['fullname'] = req.user.fullname;
+            data['fullname'] = fullname;
         }
 
         //remove properties which we do not want to save in DB
@@ -93,7 +94,7 @@ var appController = function(delayMobile, delayDesktop, fullname) {
                     } else {
                         messText = ' move ';
                     }
-                    if (data['fullname'] !== req.user.fullname) {
+                    if (data['fullname'] !== fullname) {
                         errorMess = 'You cannot' + messText + 'other people reservations';
                     }
                 }
@@ -143,7 +144,7 @@ var appController = function(delayMobile, delayDesktop, fullname) {
                                                     }
                                                 }
                                                 if (mode === 'updated') {
-                                                    if (data['fullname'] !== req.user.fullname) {
+                                                    if (data['fullname'] !== fullname) {
                                                         errorMess = 'You cannot move other people reservations';
                                                     }
                                                 }
