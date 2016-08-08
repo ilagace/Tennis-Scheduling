@@ -5,3 +5,11 @@
 2016-08-08 16:02:33 - Finished habitattennis.exe
 2016-08-08 16:02:35 - Starting D:\Program Files\nodejs\node.exe --harmony "C:\Users\Ivan\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js" -f "D:\Software Development Projects\Tennis Scheduling\app.js" -l "Habitat-Tennis" -g 0.25 -w 1 -r 3 -a n
 2016-08-08 16:02:35 - Started 7152
+2016-08-08 17:19:54 - Stopping habitattennis.exe
+2016-08-08 17:19:54 - ProcessKill 7152
+2016-08-08 17:19:54 - Finished habitattennis.exe
+2016-08-08 17:19:55 - Starting D:\Program Files\nodejs\node.exe --harmony "C:\Users\Ivan\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js" -f "D:\Software Development Projects\Tennis Scheduling\app.js" -l "Habitat-Tennis" -g 0.25 -w 1 -r 3 -a n
+2016-08-08 17:19:55 - Started 7640
+2016-08-08 17:20:51 - Stopping habitattennis.exe
+2016-08-08 17:20:51 - ProcessKill 7640
+2016-08-08 17:20:51 - Finished habitattennis.exe
