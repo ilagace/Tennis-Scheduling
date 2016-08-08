@@ -21,10 +21,10 @@ var router = function(delayMobile, delayDesktop, fullname) {
 
     //  User must sign-in to access the scheduler
     approuter.route('/H67signin/').post(passport.authenticate('local-signin',
-            {failureRedirect: '/tennis/H67signin/', successRedirect: '/tennis/calendarH67/0/0/', failureFlash: true, badRequestMessage: 'Missing Information'}));
+            {session: true, failureRedirect: '/tennis/H67signin/', successRedirect: '/tennis/calendarH67/0/0/', failureFlash: true, badRequestMessage: 'Missing Information'}));
 
     approuter.route('/H67signup/').post(passport.authenticate('local-signup',
-            {failureRedirect: '/tennis/H67signup/', successRedirect: '/tennis/H67signin/', failureFlash: true, badRequestMessage: 'Missing Information'}));
+            {session: true, failureRedirect: '/tennis/H67signup/', successRedirect: '/tennis/H67signin/', failureFlash: true, badRequestMessage: 'Missing Information'}));
 
     approuter.route('/calendardata/:id').get(appController.getcalendarH67);
 
