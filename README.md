@@ -1,9 +1,9 @@
 
 ## Tennis Scheduling Application
 
-This Project is a full scheduling system for 2 tennis courts at Habitat 67 in Montreal.  It is based on an open source scheduler from DHTMLX that I had to extensively modified.  It is a nodejs application with mongoDB backend for the users and reservations.  There are a few parameters such as how far in future you can make reservations (2) and maximum number of reservations allowed (2) per user.  The software makes sure that you cannot double book a court, move or delete someone else reservations (!).  It uses the live-updates module to allow mutiple simultaneous users but an extra nodejs server is required.
+This Project is a full scheduling system for 2 tennis courts at Habitat 67 in Montreal.  It is based on an open source scheduler from DHTMLX that I had to extensively modified.  It is a nodejs application with mongoDB backend for the users and reservations.  There are a few parameters such as how far in future you can make reservations (2 days) and maximum number of reservations allowed (2) per user.  The software makes sure that you cannot double book a court, move or delete someone else reservations (!).  It uses the live-updates module to allow multiple simultaneous users but an extra nodejs server is required.
 
-Addapted to work on all platforms and devices.  Most users access the application via cellphone.
+Adapted to work on all platforms and devices.  Most users access the application via cellphone.
 
 ## Installation
 
