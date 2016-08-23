@@ -55,7 +55,6 @@ var appController = function(delayMobile, delayDesktop, fullname) {
         var court = parseInt(req.params.id);
         var errorMess = '';
         var data = req.body;
-        console.log('post', req.user);
         //get operation type
         var mode = data['!nativeeditor_status'];
         //get id of record

@@ -334,3 +334,13 @@ TypeError: Cannot read property 'fullname' of undefined
     at param (D:\Software Development Projects\node_modules\express\lib\router\index.js:365:14)
     at param (D:\Software Development Projects\node_modules\express\lib\router\index.js:365:14)
     at Function.process_params (D:\Software Development Projects\node_modules\express\lib\router\index.js:410:3)
+Mon, 08 Aug 2016 21:38:21 GMT express-session deprecated undefined resave option; provide resave option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Mon, 08 Aug 2016 21:38:21 GMT express-session deprecated undefined saveUninitialized option; provide saveUninitialized option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Tue, 09 Aug 2016 15:51:46 GMT express-session deprecated undefined resave option; provide resave option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Tue, 09 Aug 2016 15:51:46 GMT express-session deprecated undefined saveUninitialized option; provide saveUninitialized option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Thu, 11 Aug 2016 07:34:26 GMT express-session deprecated undefined resave option; provide resave option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Thu, 11 Aug 2016 07:34:26 GMT express-session deprecated undefined saveUninitialized option; provide saveUninitialized option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Fri, 12 Aug 2016 17:25:40 GMT express-session deprecated undefined resave option; provide resave option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Fri, 12 Aug 2016 17:25:40 GMT express-session deprecated undefined saveUninitialized option; provide saveUninitialized option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Tue, 16 Aug 2016 20:42:24 GMT express-session deprecated undefined resave option; provide resave option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9
+Tue, 16 Aug 2016 20:42:24 GMT express-session deprecated undefined saveUninitialized option; provide saveUninitialized option at D:\Software Development Projects\Tennis Scheduling\app.js:36:9

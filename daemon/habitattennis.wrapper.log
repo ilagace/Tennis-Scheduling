@@ -13,3 +13,22 @@
 2016-08-08 17:20:51 - Stopping habitattennis.exe
 2016-08-08 17:20:51 - ProcessKill 7640
 2016-08-08 17:20:51 - Finished habitattennis.exe
+2016-08-08 17:38:20 - Starting D:\Program Files\nodejs\node.exe --harmony "C:\Users\Ivan\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js" -f "D:\Software Development Projects\Tennis Scheduling\app.js" -l "Habitat-Tennis" -g 0.25 -w 1 -r 3 -a n
+2016-08-08 17:38:20 - Started 5844
+2016-08-09 11:51:42 - Stopping habitattennis.exe
+2016-08-09 11:51:42 - ProcessKill 5844
+2016-08-09 11:51:42 - Finished habitattennis.exe
+2016-08-09 11:51:44 - Starting D:\Program Files\nodejs\node.exe --harmony "C:\Users\Ivan\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js" -f "D:\Software Development Projects\Tennis Scheduling\app.js" -l "Habitat-Tennis" -g 0.25 -w 1 -r 3 -a n
+2016-08-09 11:51:44 - Started 6520
+2016-08-11 03:32:45 - Stopping habitattennis.exe
+2016-08-11 03:32:45 - ProcessKill 6520
+2016-08-11 03:32:45 - Finished habitattennis.exe
+2016-08-11 03:34:20 - Starting D:\Program Files\nodejs\node.exe --harmony "C:\Users\Ivan\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js" -f "D:\Software Development Projects\Tennis Scheduling\app.js" -l "Habitat-Tennis" -g 0.25 -w 1 -r 3 -a n
+2016-08-11 03:34:21 - Started 3292
+2016-08-12 13:25:19 - Starting D:\Program Files\nodejs\node.exe --harmony "C:\Users\Ivan\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js" -f "D:\Software Development Projects\Tennis Scheduling\app.js" -l "Habitat-Tennis" -g 0.25 -w 1 -r 3 -a n
+2016-08-12 13:25:20 - Started 532
+2016-08-16 16:41:49 - Stopping habitattennis.exe
+2016-08-16 16:41:49 - ProcessKill 532
+2016-08-16 16:41:49 - Finished habitattennis.exe
+2016-08-16 16:42:23 - Starting D:\Program Files\nodejs\node.exe --harmony "C:\Users\Ivan\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js" -f "D:\Software Development Projects\Tennis Scheduling\app.js" -l "Habitat-Tennis" -g 0.25 -w 1 -r 3 -a n
+2016-08-16 16:42:23 - Started 9352
